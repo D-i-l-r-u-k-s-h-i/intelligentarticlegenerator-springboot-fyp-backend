@@ -1,6 +1,7 @@
 package lk.apiit.intelligent_article_generator.Article.Controller;
 
 import com.itextpdf.text.DocumentException;
+import lk.apiit.intelligent_article_generator.Article.DTO.ArticleDTO;
 import lk.apiit.intelligent_article_generator.Article.DTO.MaskedLMDTO;
 import lk.apiit.intelligent_article_generator.Article.Entity.Article;
 import lk.apiit.intelligent_article_generator.Article.Service.ArticleService;
@@ -25,8 +26,6 @@ public class ArticleController {
     public ResponseEntity<?> getMaskedLMResult(@RequestHeader(value = "Authorization") String token,@RequestBody MaskedLMDTO lmdto) throws Exception {
         Utils.checkToken(token);
 
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         HttpEntity<MaskedLMDTO> entity = new HttpEntity<MaskedLMDTO>(lmdto);
 
         return restTemplate.exchange("http://localhost:5000/maskedlm", HttpMethod.POST, entity, String.class);
@@ -39,10 +38,10 @@ public class ArticleController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> saveArticle(@RequestHeader(value = "Authorization") String token, @RequestBody MaskedLMDTO dto) throws Exception {
+    public ResponseEntity<?> saveArticle(@RequestHeader(value = "Authorization") String token, @RequestBody ArticleDTO dto) throws Exception {
         Utils.checkToken(token);
 
-        articleService.saveAsPDF(dto.getGeneratedText());
+        articleService.saveAsPDF(dto);
         return ResponseEntity.ok("File saved successfully");
     }
 
@@ -54,10 +53,11 @@ public class ArticleController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> editArticle(@RequestHeader(value = "Authorization") String token, @RequestBody MaskedLMDTO dto) throws Exception {
+    public ResponseEntity<?> editArticle(@RequestHeader(value = "Authorization") String token, @RequestBody ArticleDTO dto) throws Exception {
         Utils.checkToken(token);
 
-        return ResponseEntity.ok(" ");
+        articleService.editArticle(dto);
+        return ResponseEntity.ok("File edited Successfully");
     }
 
     @RequestMapping(value = "/articles", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -65,5 +65,12 @@ public class ArticleController {
         Utils.checkToken(token);
 
         return ResponseEntity.ok(articleService.getArticlesOfUser());
+    }
+
+    @RequestMapping(value = "/richtext/{id}", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getRichTextFromPDF(@RequestHeader(value = "Authorization") String token,@PathVariable("id") long id) throws Exception {
+        Utils.checkToken(token);
+
+        return ResponseEntity.ok(articleService.getRichTextFromPDF(id));
     }
 }
