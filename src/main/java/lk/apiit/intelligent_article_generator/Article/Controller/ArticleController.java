@@ -12,6 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @RequestMapping("/article")
 public class ArticleController {
@@ -34,7 +37,15 @@ public class ArticleController {
     @RequestMapping(value = "/generate", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> generateArticles(@RequestHeader(value = "Authorization") String token, @RequestBody MaskedLMDTO dto) throws Exception {
         Utils.checkToken(token);
-        return ResponseEntity.ok(" ");
+
+        //hardcoding for now
+        List<MaskedLMDTO> list=new ArrayList<>();
+        list.add(new MaskedLMDTO("Slide 1 jghn kbn jk.bnm bkn/m cvgjhbknm.gchgvjhb.jn/jkvjbk cvkjlbhkjnkm cvhbjn cvghbkjnk cvjhbn cvbjn cvjhbkn vblnjkm vbhjknm cvbhn sxcvbsdfgj dgbhn tdfgh rfghj fghj esdfytugyhuj dfghkjl tydfghj dfghj dfghjkn tdfgyhj fghj rrdfghj rdtfgyh ccgvbhjn hbjkjnk gmhjvhbjn xchgvjhbknk etyfgvbhkjn zsxgcfhvb wretdryfugyiuh zrxtcvbh asdxcvgb zxcvb bjnkm lkfdj utd b gfdjytuyfughli sdrftyguhi 324w54e65r7t dxfcghvjb zxcvghbjn edfcvbhjn esrdftyg etrdytcfvbn lhkgjfhg yuktjydr stdryfgh xcfgvhbj zxcvbh j ytyuryr tdtfvbjn kblvjchxjgh xchvbn gfkhjg"));
+        list.add(new MaskedLMDTO("Slide 2"));
+        list.add(new MaskedLMDTO("Slide 3"));
+        list.add(new MaskedLMDTO("Slide 4"));
+
+        return ResponseEntity.ok(list);
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
