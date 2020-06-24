@@ -38,14 +38,21 @@ public class ArticleController {
     public ResponseEntity<?> generateArticles(@RequestHeader(value = "Authorization") String token, @RequestBody MaskedLMDTO dto) throws Exception {
         Utils.checkToken(token);
 
-        //hardcoding for now
-        List<MaskedLMDTO> list=new ArrayList<>();
-        list.add(new MaskedLMDTO("Slide 1 jghn kbn jk.bnm bkn/m cvgjhbknm.gchgvjhb.jn/jkvjbk cvkjlbhkjnkm cvhbjn cvghbkjnk cvjhbn cvbjn cvjhbkn vblnjkm vbhjknm cvbhn sxcvbsdfgj dgbhn tdfgh rfghj fghj esdfytugyhuj dfghkjl tydfghj dfghj dfghjkn tdfgyhj fghj rrdfghj rdtfgyh ccgvbhjn hbjkjnk gmhjvhbjn xchgvjhbknk etyfgvbhkjn zsxgcfhvb wretdryfugyiuh zrxtcvbh asdxcvgb zxcvb bjnkm lkfdj utd b gfdjytuyfughli sdrftyguhi 324w54e65r7t dxfcghvjb zxcvghbjn edfcvbhjn esrdftyg etrdytcfvbn lhkgjfhg yuktjydr stdryfgh xcfgvhbj zxcvbh j ytyuryr tdtfvbjn kblvjchxjgh xchvbn gfkhjg"));
-        list.add(new MaskedLMDTO("Slide 2"));
-        list.add(new MaskedLMDTO("Slide 3"));
-        list.add(new MaskedLMDTO("Slide 4"));
+        if(dto.getLength()==0){
+            dto.setLength(50);
+        }
 
-        return ResponseEntity.ok(list);
+        if(dto.getNoOfSamples()==0){
+            dto.setNoOfSamples(1);
+        }
+
+        if(dto.getTemperature()==0.0){
+            dto.setTemperature(0.8);
+        }
+
+        HttpEntity<MaskedLMDTO> entity = new HttpEntity<MaskedLMDTO>(dto);
+
+        return restTemplate.exchange("http://localhost:5000/generate", HttpMethod.POST, entity, String.class);
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -83,5 +90,13 @@ public class ArticleController {
         Utils.checkToken(token);
 
         return ResponseEntity.ok(articleService.getRichTextFromPDF(id));
+    }
+
+    @RequestMapping(value = "/updatename", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateArticleName(@RequestHeader(value = "Authorization") String token, @RequestBody ArticleDTO dto) throws Exception {
+        Utils.checkToken(token);
+
+        articleService.updateArticleName(dto);
+        return ResponseEntity.ok("Article Name updated successfully");
     }
 }

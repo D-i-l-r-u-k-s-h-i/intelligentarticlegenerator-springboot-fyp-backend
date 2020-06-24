@@ -54,33 +54,30 @@ public class CustomUserDetailService implements UserDetailsService {
     public String saveUser(UserDTO userDTO){
         String ret="";
 
-        AllUsers user= allUsersRepository.findByUsername(userDTO.getCustomerUserName());
+        AllUsers user= allUsersRepository.findByUsername(userDTO.getUserUserName());
 
         if(user!=null){
             ret = "Sorry this name is taken";
         }
         else{
-            User cust_by_email= userRepository.findByUserEmail(userDTO.getCustomerEmail());
+            User cust_by_email= userRepository.findByUserEmail(userDTO.getUserEmail());
             if(cust_by_email!=null){
                 ret="Sorry, user with this Email already exists";
             }
             //check confirm password
-            if(userDTO.getCustomerPassword().equals(userDTO.getConfirmPassword())){
-                String custPwd= userDTO.getCustomerPassword();
+            if(userDTO.getPassword().equals(userDTO.getConfirmPassword())){
+                String custPwd= userDTO.getPassword();
                 String pwd = new BCryptPasswordEncoder().encode(custPwd);
 
                 AllUsers newuser=new AllUsers();
-                newuser.setUsername(userDTO.getCustomerUserName());
+                newuser.setUsername(userDTO.getUserUserName());
                 newuser.setPassword(pwd);
 
                 newuser.setRole(new Role(2, RoleName.ROLE_USER));
 
                 User newCust=new User();
-                newCust.setUserFName(userDTO.getCustomerFirstName());
-                newCust.setUserUserName(userDTO.getCustomerUserName());
-                newCust.setUserLName(userDTO.getCustomerLastName());
-                newCust.setUserContactNo(userDTO.getCustomerContactNo());
-                newCust.setUserEmail(userDTO.getCustomerEmail());
+                newCust.setUserUserName(userDTO.getUserUserName());
+                newCust.setUserEmail(userDTO.getUserEmail());
 
                 newCust.setUser(newuser);
                 allUsersRepository.save(newuser);
@@ -99,11 +96,11 @@ public class CustomUserDetailService implements UserDetailsService {
 
     public String updatePwd(UserDTO userDTO){
         String response="";
-        AllUsers u = allUsersRepository.findByUsername(userDTO.getCustomerUserName());
+        AllUsers u = allUsersRepository.findByUsername(userDTO.getUserUserName());
         if (u != null) {
 //            if (bCryptPasswordEncoder.matches(pwdUpdate.getOld_password(), u.getPassword())) {
-                if (userDTO.getCustomerPassword().equals(userDTO.getConfirmPassword())) {
-                    String pwd = new BCryptPasswordEncoder().encode(userDTO.getCustomerPassword());
+                if (userDTO.getPassword().equals(userDTO.getConfirmPassword())) {
+                    String pwd = new BCryptPasswordEncoder().encode(userDTO.getPassword());
                     u.setPassword(pwd);
                     allUsersRepository.save(u);
                     response.concat("successful password update");

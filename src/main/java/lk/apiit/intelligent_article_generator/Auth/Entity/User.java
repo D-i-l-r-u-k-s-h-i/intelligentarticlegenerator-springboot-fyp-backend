@@ -22,7 +22,7 @@ public class User {
 
     private String userLName;
 
-    private String userContactNo;
+//    private String userContactNo;
 
     private String userUserName;
 

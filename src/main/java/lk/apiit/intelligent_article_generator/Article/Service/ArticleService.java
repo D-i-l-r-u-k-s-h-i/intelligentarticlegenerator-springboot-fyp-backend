@@ -200,4 +200,19 @@ public class ArticleService {
 
         return ret;
     }
+
+    public void updateArticleName(ArticleDTO articleDTO){
+        Article article=articleRepository.findByArticleId(articleDTO.getId());
+
+        if(articleDTO.getArticleName()!=null){
+            article.setArticleName(articleDTO.getArticleName());
+            articleRepository.save(article);
+        }
+    }
+
+    public void deleteArticle(long id){
+        Article article=articleRepository.findByArticleId(id);
+
+        articleRepository.delete(article);
+    }
 }

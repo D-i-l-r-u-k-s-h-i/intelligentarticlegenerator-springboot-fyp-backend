@@ -21,9 +21,9 @@ public class MaskedLMDTO implements Serializable {
 
     private int length;
 
-    private String caption;
+//    private String caption;
 
-    public MaskedLMDTO(String caption) {
-        this.caption = caption;
-    }
+//    public MaskedLMDTO(String caption) {
+//        this.caption = caption;
+//    }
 }

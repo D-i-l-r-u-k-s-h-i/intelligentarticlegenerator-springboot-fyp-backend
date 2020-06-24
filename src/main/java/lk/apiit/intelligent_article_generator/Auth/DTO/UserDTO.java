@@ -6,29 +6,19 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserDTO {
-    private long customerId;
+    private long userId;
 
-    private String customerFirstName;
+    private String userFName;
 
-    private String customerLastName;
+    private String userLName;
 
-    private String customerContactNo;
+    private String userUserName;
 
-    private String customerEmergencyContactNo;
-
-//    private String customerAddress;
-
-    private String customerStatus;
-
-    private String customerUserName;
-
-    private String customerPassword;
+    private String password;
 
     private String confirmPassword;
 
-    private String customerEmail;
-
-    private boolean isBlacklisted;
+    private String userEmail;
 
     private long roleId;
 }
