@@ -99,4 +99,12 @@ public class ArticleController {
         articleService.updateArticleName(dto);
         return ResponseEntity.ok("Article Name updated successfully");
     }
+
+    @RequestMapping(value = "/delete/{id}",method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteItem(@RequestHeader(value = "Authorization") String token,@PathVariable(name = "id") long id) throws Exception {
+        Utils.checkToken(token);
+
+        articleService.deleteArticle(id);
+        return ResponseEntity.ok("Article was removed successfully");
+    }
 }

@@ -210,8 +210,13 @@ public class ArticleService {
         }
     }
 
+    @Transactional
     public void deleteArticle(long id){
         Article article=articleRepository.findByArticleId(id);
+
+        UserArticle uarticle=userArticleRepository.getByArticle_ArticleId(id);
+
+        userArticleRepository.delete(uarticle);
 
         articleRepository.delete(article);
     }

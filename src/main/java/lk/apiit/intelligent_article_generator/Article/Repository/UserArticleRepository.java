@@ -10,4 +10,6 @@ import java.util.List;
 public interface UserArticleRepository extends JpaRepository<UserArticle,Long> {
 
     List<UserArticle> getAllByArtucleUser_UserId(long id);
+
+    UserArticle getByArticle_ArticleId(long id);
 }
