@@ -48,10 +48,10 @@ public class AuthController {
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
 
-    @RequestMapping(value = "/register",method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> registerNewUser(@Valid @RequestBody UserDTO userDTO){
-        return ResponseEntity.ok(customUserDetailsService.saveUser(userDTO));
-    }
+//    @RequestMapping(value = "/register",method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<?> registerNewUser(@Valid @RequestBody UserDTO userDTO){
+//        return ResponseEntity.ok(customUserDetailsService.saveUser(userDTO));
+//    }
 
     @RequestMapping(value = "/updatepwd",method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updatePwd(@RequestBody UserDTO userDTO){
