@@ -59,7 +59,7 @@ public class ArticleService {
         Paragraph paragraph=new Paragraph(articleDTO.getArticleData(),font);
 
         document.add(paragraph);
-        document.addTitle(String.valueOf(new Date()));
+        document.addTitle(articleDTO.getArticleName());
         document.addCreator("Intelligent Article Generator");
         document.addAuthor(userSession.getUsername());
         document.close();

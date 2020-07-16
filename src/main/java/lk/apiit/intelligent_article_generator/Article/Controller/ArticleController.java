@@ -31,7 +31,7 @@ public class ArticleController {
 
         HttpEntity<MaskedLMDTO> entity = new HttpEntity<MaskedLMDTO>(lmdto);
 
-        return restTemplate.exchange("http://localhost:5000/maskedlm", HttpMethod.POST, entity, String.class);
+        return restTemplate.exchange("http://20.185.33.254:5000/maskedlm", HttpMethod.POST, entity, String.class);
     }
 
     @RequestMapping(value = "/generate", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -52,7 +52,7 @@ public class ArticleController {
 
         HttpEntity<MaskedLMDTO> entity = new HttpEntity<MaskedLMDTO>(dto);
 
-        return restTemplate.exchange("http://localhost:5000/generate", HttpMethod.POST, entity, String.class);
+        return restTemplate.exchange("http://20.185.33.254:5000/generate", HttpMethod.POST, entity, String.class);
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)

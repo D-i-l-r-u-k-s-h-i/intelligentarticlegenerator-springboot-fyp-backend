@@ -55,38 +55,43 @@ public class CustomUserDetailService implements UserDetailsService {
         String ret="";
 
         AllUsers user= allUsersRepository.findByUsername(userDTO.getUserUserName());
+        UserSession userSession = (UserSession) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if(user!=null){
             ret = "Sorry this name is taken";
         }
         else{
-            User cust_by_email= userRepository.findByUserEmail(userDTO.getUserEmail());
-            if(cust_by_email!=null){
-                ret="Sorry, user with this Email already exists";
-            }
-            //check confirm password
-            if(userDTO.getPassword().equals(userDTO.getConfirmPassword())){
-                String custPwd= userDTO.getPassword();
-                String pwd = new BCryptPasswordEncoder().encode(custPwd);
+            //check user role
+            if(userSession.getRole().getRoleName().equals(RoleName.ROLE_ADMIN)){
 
-                AllUsers newuser=new AllUsers();
-                newuser.setUsername(userDTO.getUserUserName());
-                newuser.setPassword(pwd);
+                User cust_by_email= userRepository.findByUserEmail(userDTO.getUserEmail());
+                if(cust_by_email!=null){
+                    ret="Sorry, user with this Email already exists";
+                }
+                else{
+                    String custPwd= userDTO.getPassword();
+                    String pwd = new BCryptPasswordEncoder().encode(custPwd);
 
-                newuser.setRole(new Role(2, RoleName.ROLE_USER));
+                    AllUsers newuser=new AllUsers();
+                    newuser.setUsername(userDTO.getUserUserName());
+                    newuser.setPassword(pwd);
 
-                User newCust=new User();
-                newCust.setUserUserName(userDTO.getUserUserName());
-                newCust.setUserEmail(userDTO.getUserEmail());
+                    newuser.setRole(new Role(2, RoleName.ROLE_USER));
 
-                newCust.setUser(newuser);
-                allUsersRepository.save(newuser);
-                userRepository.save(newCust);
+                    User newCust=new User();
+                    newCust.setUserUserName(userDTO.getUserUserName());
+                    newCust.setUserEmail(userDTO.getUserEmail());
 
-                ret="Successful registration";
+                    newCust.setUser(newuser);
+                    allUsersRepository.save(newuser);
+                    userRepository.save(newCust);
+
+                    ret="Successful registration";
+                }
+
             }
             else {
-                ret="Passwords doesn't match";
+                ret="Only Admin Role can perform this action";
             }
 
         }
