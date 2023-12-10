@@ -220,4 +220,22 @@ public class ArticleService {
 
         articleRepository.delete(article);
     }
+
+    public List<ArticleDTO> searchArticle(String name){
+        List<Article> articleList=articleRepository.searchArticle(name);
+        List<ArticleDTO> dtoList=Utils.mapAll(articleList,ArticleDTO.class);
+
+        List<ArticleDTO> userArticles=new ArrayList<>();
+
+        UserSession userSession = (UserSession) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        for (ArticleDTO article:dtoList) {
+            UserArticle userArticle= userArticleRepository.getByArticle_ArticleId(article.getId());
+            if(userArticle.getArtucleUser().getUserId()==userSession.getId()){
+                userArticles.add(article);
+            }
+        }
+
+        return userArticles;
+    }
 }
